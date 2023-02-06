@@ -3,7 +3,7 @@
 
     export default defineComponent({
         props: {
-            msg: String
+            msg: Array
         },
         mounted() {
             this.msg

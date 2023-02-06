@@ -33,16 +33,20 @@ export default defineComponent({
         this.type = event.target.value
     },
     handleAmountChange(event: { target: { value: string; }; }){
-        if(+event.target.value < 0) {
+        
+        if (isNaN(+event.target.value)){
+          this.amount="5"
+          event.target.value = this.amount // should i be concerned
+        } else if(+event.target.value < 0) {
             this.amount = "5"
-            event.target.value = this.amount
+            event.target.value = this.amount // should i be concerned
         } else if (+event.target.value > 50) {
             this.amount = "50"
             console.log(this.amount)
-            event.target.value = this.amount
-        } else if (event.target.value === ""){
-            event.target.value = "1"
-            this.amount = "1"
+            event.target.value = this.amount // should i be concerned
+        // } else if (event.target.value === ""){
+        //     // event.target.value = "1"
+        //     this.amount = "1"
         } else {
             this.amount = event.target.value
             console.log("omooo")
@@ -78,7 +82,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Quiz v-if="start" msg="omo" />
+  <Quiz v-if="start" :msg="[amount,category, type, difficulty]" />
   <Start v-else 
     :start="startHandler" 
     :type="type" 

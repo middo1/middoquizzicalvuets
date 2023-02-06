@@ -39,7 +39,7 @@ export default defineComponent({
                 <div className="select-container">
                     <label>
                         Select Number of Questions:
-                        <input type="number" :value="amount"  @input="handleAmountChange" />
+                        <input type="text" :value="amount"  @input="handleAmountChange" />
                     </label>
                     <label>
                         Select Category:
