@@ -1,29 +1,43 @@
-<script lang="ts">
+e<script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
-  data() {
+  setup(props, {emit}) {
+
+
+    function handleStartChange() {
+      emit("startChange")
+    }
+
+    function amountChange(event : any) {
+      emit("amountChange", event.target.value)
+    }
+
+    function typeChange(event: any) {
+      emit("typeChange", event.target.value)
+    }
+
+    function categoryChange(event: any) {
+      emit("categoryChange", event.target.value)
+    }
+
+    function difficultyChange(event: any) {
+      emit("difficultyChange", event.target.value)
+    }
     return {
-      omoo: "omooo",
+      handleStartChange,
+      amountChange,
+      typeChange,
+      categoryChange,
+      difficultyChange,
     };
   },
   props: {
-    start: Function,
-    handleAmountChange: Function,
-    handleTypeChange: Function,
-    handleDifficultyChange: Function,
-    handleCategoryChange: Function,
     amount: String,
     category: String,
     difficulty: String,
     type: String,
   },
   mounted() {
-    // what the fuck is all this?????? you're not even calling the functions
-    this.start;
-    this.handleAmountChange;
-    this.handleCategoryChange;
-    this.handleDifficultyChange;
-    this.handleTypeChange;
     this.amount;
     this.category;
     this.difficulty;
@@ -40,11 +54,11 @@ export default defineComponent({
       <div className="select-container">
         <label>
           Select Number of Questions:
-          <input type="text" :value="amount" @input="handleAmountChange" />
+          <input type="text" :value="amount" @input="amountChange" />
         </label>
         <label>
           Select Category:
-          <select :value="category" @change="handleCategoryChange">
+          <select :value="category" @change="categoryChange">
             <option value="">Any Category</option>
             <option value="10">Entertainment: Books</option>
             <option value="11">Entertainment: Film</option>
@@ -75,7 +89,7 @@ export default defineComponent({
         </label>
         <label>
           Select Type:
-          <select :value="type" @change="handleTypeChange">
+          <select :value="type" @change="typeChange">
             <option value="">Any Type</option>
             <option value="multiple">Multiple Choice</option>
             <option value="boolean">True/ False</option>
@@ -83,7 +97,7 @@ export default defineComponent({
         </label>
         <label>
           Select Difficulty:
-          <select :value="difficulty" @change="handleDifficultyChange">
+          <select :value="difficulty" @change="difficultyChange">
             <option value="">Any Difficulty</option>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
@@ -92,6 +106,6 @@ export default defineComponent({
         </label>
       </div>
     </form>
-    <button className="app-btn" @click="start">Start Quiz</button>
+    <button className="app-btn" @click="handleStartChange">Start Quiz</button>
   </div>
 </template>

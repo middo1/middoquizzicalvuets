@@ -29,36 +29,36 @@ export default defineComponent({
       reset.value = false;
     }
 
-    function handleTypeChange(event: { target: { value: string } }) {
-      type.value = event.target.value;
+    function handleTypeChange(t: string) {
+      type.value = t
     }
 
-    function handleAmountChange(event: { target: { value: string } }) {
-      if (isNaN(+event.target.value)) {
+    function handleAmountChange( a: string ) {
+      if (isNaN(+a)) {
         amount.value = "5";
-        event.target.value = amount.value; // should i be concerned
-      } else if (+event.target.value < 0) {
+        // event.target.value = amount.value; // should i be concerned
+      } else if (+a < 0) {
         amount.value = "5";
-        event.target.value = amount.value; // should i be concerned
-      } else if (+event.target.value > 50) {
+        // event.target.value = amount.value; // should i be concerned
+      } else if (+a > 50) {
         amount.value = "50";
         console.log(amount.value);
-        event.target.value = amount.value; // should i be concerned
+        a = amount.value; // should i be concerned
         // } else if (event.target.value === ""){
         //     // event.target.value = "1"
         //     amount.value = "1"
       } else {
-        amount.value = event.target.value;
+        amount.value = a;
         console.log("omooo");
       }
     }
 
-    function handleDifficultyChange(event: { target: { value: any } }) {
-      difficulty.value = event.target.value;
+    function handleDifficultyChange(d: string) {
+      difficulty.value = d
     }
 
-    function handleCategoryChange(event: { target: { value: any } }) {
-      category.value = event.target.value;
+    function handleCategoryChange(c: string) {
+      category.value = c
     }
     function handleCheck() {
       check.value = !check.value;
@@ -111,15 +111,15 @@ export default defineComponent({
 
   <Start
     v-else
-    :start="startHandler"
+    @start-change="startHandler"
     :type="type"
     :amount="amount"
     :difficulty="difficulty"
     :category="category"
-    :handleAmountChange="handleAmountChange"
-    :handleDifficultyChange="handleDifficultyChange"
-    :handleCategoryChange="handleCategoryChange"
-    :handleTypeChange="handleTypeChange"
+    @amount-change="handleAmountChange"
+    @difficulty-change="handleDifficultyChange"
+    @category-change="handleCategoryChange"
+    @type-change="handleTypeChange"
   />
 </template>
 
