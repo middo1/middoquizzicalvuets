@@ -6,7 +6,7 @@
             msg: Array
         },
         mounted() {
-            this.msg
+            this.msg // what's this?
         }
     })
 </script>
