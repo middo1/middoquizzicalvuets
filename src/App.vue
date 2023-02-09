@@ -14,7 +14,7 @@ export default defineComponent({
     // data
     const questions = ref([]);
     const restart = ref(false);
-    const amount = ref("5");
+    const amount = ref(5);
     const type = ref("");
     const difficulty = ref("");
     const category = ref("");
@@ -32,24 +32,16 @@ export default defineComponent({
     function handleTypeChange(t: string) {
       type.value = t
     }
+    
+    function handleAmountIncrease(){
+      if(amount.value < 50){
+        amount.value += 5
+      }
+    }
 
-    function handleAmountChange( a: string ) {
-      if (isNaN(+a)) {
-        amount.value = "5";
-        // event.target.value = amount.value; // should i be concerned
-      } else if (+a < 0) {
-        amount.value = "5";
-        // event.target.value = amount.value; // should i be concerned
-      } else if (+a > 50) {
-        amount.value = "50";
-        console.log(amount.value);
-        a = amount.value; // should i be concerned
-        // } else if (event.target.value === ""){
-        //     // event.target.value = "1"
-        //     amount.value = "1"
-      } else {
-        amount.value = a;
-        console.log("omooo");
+    function handleAmountDecrease(){
+      if(amount.value > 5){
+        amount.value -= 5
       }
     }
 
@@ -90,7 +82,8 @@ export default defineComponent({
       check,
       startHandler,
       handleTypeChange,
-      handleAmountChange,
+      handleAmountIncrease,
+      handleAmountDecrease,
       handleDifficultyChange,
       handleCategoryChange,
       handleCheck,
@@ -116,7 +109,8 @@ export default defineComponent({
     :amount="amount"
     :difficulty="difficulty"
     :category="category"
-    @amount-change="handleAmountChange"
+    @amount-increase="handleAmountIncrease"
+    @amount-decrease="handleAmountDecrease"
     @difficulty-change="handleDifficultyChange"
     @category-change="handleCategoryChange"
     @type-change="handleTypeChange"

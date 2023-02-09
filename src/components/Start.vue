@@ -8,8 +8,12 @@ export default defineComponent({
       emit("startChange")
     }
 
-    function amountChange(event : any) {
-      emit("amountChange", event.target.value)
+    function amountIncrease(event : any) {
+      emit("amountIncrease")
+    }
+
+    function amountDecrease(event : any) {
+      emit("amountDecrease")
     }
 
     function typeChange(event: any) {
@@ -25,14 +29,15 @@ export default defineComponent({
     }
     return {
       handleStartChange,
-      amountChange,
+      amountIncrease,
+      amountDecrease,
       typeChange,
       categoryChange,
       difficultyChange,
     };
   },
   props: {
-    amount: String,
+    amount: Number,
     category: String,
     difficulty: String,
     type: String,
@@ -47,14 +52,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div className="start-app">
-    <h1 className="app-name">Quizzical</h1>
-    <h5 className="app-description">A cool quiz app</h5>
+  <div class="start-app">
+    <h1 class="app-name">Quizzical</h1>
+    <h5 class="app-description">A cool quiz app</h5>
     <form>
-      <div className="select-container">
+      <div class="select-container">
         <label>
           Select Number of Questions:
-          <input type="text" :value="amount" @input="amountChange" />
+          <div class="amount-form">
+            <input type="text" readonly :value="amount" />
+            <button class="amount-btn" type="button" @click="amountIncrease">+</button>
+            <button class="amount-btn" type="button" @click="amountDecrease">-</button>
+          </div>
         </label>
         <label>
           Select Category:
@@ -106,6 +115,6 @@ export default defineComponent({
         </label>
       </div>
     </form>
-    <button className="app-btn" @click="handleStartChange">Start Quiz</button>
+    <button class="app-btn" @click="handleStartChange">Start Quiz</button>
   </div>
 </template>
