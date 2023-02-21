@@ -6,14 +6,14 @@
             question: Object,
             check: Boolean
         },
-        setup(props, {emit}) {const options = ref([])
+        setup(props, {emit}) {const options = ref<any[]>([])
 
             function setOption() {
                 const rand = Math.floor(Math.random() * 4)
                 let op = []
                 options.value = []
-                op = [...props.question.incorrect_answers]
-                op.splice(rand, 0, props.question.correct_answer)
+                op = [...props?.question?.incorrect_answers]
+                op.splice(rand, 0, props?.question?.correct_answer)
                 for(let x=0;x < op.length;x++) {
                     options.value.push({value:op[x],isSelected:false})
                 }
@@ -30,7 +30,7 @@
             function calcScore(){
                 let score = 0
                 const checkAnswer = options.value.filter(option => option.isSelected 
-                && option.value === props.question.correct_answer)
+                && option.value === props?.question?.correct_answer)
                 score = checkAnswer.length
                 ? score + 1
                 : 0
@@ -61,16 +61,16 @@
 
 <template>
     <div className="question">
-        <h1 className="question-text" v-html="question.question">
+        <h1 className="question-text" v-html="question?.question">
         </h1>
         <div class="option-container">
             <div v-for="option in options"
                 v-html="option.value"
                 class="option"
                 :class="{selected: option.isSelected,
-                        incorrect: $props.check &&  option.value !== $props.question.correct_answer,
-                        incorrectSelected: $props.check && option.isSelected &&  option.value !== $props.question.correct_answer,
-                        correct: $props.check && option.value === $props.question.correct_answer}"
+                        incorrect: $props.check &&  option.value !== $props?.question?.correct_answer,
+                        incorrectSelected: $props.check && option.isSelected &&  option.value !== $props?.question?.correct_answer,
+                        correct: $props.check && option.value === $props?.question?.correct_answer}"
                 @click="handleClick(option.value)">
             </div>
         </div>

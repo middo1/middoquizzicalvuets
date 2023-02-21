@@ -17,7 +17,7 @@ export default defineComponent({
     const difficulty = ref("");
     const category = ref("");
     const reset = ref(false);
-    const score = ref([]);
+    const score = ref<number[]>([]);
     const start = ref(false);
     const check = ref(false);
     const scor = ref(0)
