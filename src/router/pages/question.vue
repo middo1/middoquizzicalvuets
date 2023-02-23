@@ -1,3 +1,3 @@
 <template>
-  <router-view/>
+    <h1>Question</h1>
 </template>
