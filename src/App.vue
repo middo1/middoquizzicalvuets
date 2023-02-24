@@ -58,6 +58,7 @@ export default defineComponent({
     function handleRestart() {
       restart.value = !restart.value;
       check.value = !check.value;
+      score.value = []
     }
 
     function addScore(s: any) {
@@ -72,6 +73,7 @@ export default defineComponent({
     function handleReset() {
       reset.value = !reset.value;
       check.value = false;
+      score.value = []
     }
     
     function handleBtn(){
