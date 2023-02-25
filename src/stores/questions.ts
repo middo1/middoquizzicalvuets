@@ -1,0 +1,42 @@
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
+
+export const useQuestionStore = defineStore('questions', () => {
+    const amount = ref(5)
+    const difficulty = ref("")
+    const category = ref("")
+    const type = ref("")
+    const offlineQuestions = [{ "category": "Sports", "type": "multiple", "difficulty": "hard", "question": "How many times did Martina Navratilova win the Wimbledon Singles Championship?", "correct_answer": "Nine", "incorrect_answers": ["Ten", "Seven", "Eight"] },
+    { "category": "Entertainment: Video Games", "type": "multiple", "difficulty": "easy", "question": "Which of these is NOT a main playable character in &quot;Grand Theft Auto V&quot;?", "correct_answer": "Lamar", "incorrect_answers": ["Trevor", "Michael", "Franklin"] },
+    { "category": "Entertainment: Comics", "type": "boolean", "difficulty": "hard", "question": "In the comic book &quot;Archie&quot;, Betty is friends with Veronica because she is rich.", "correct_answer": "False", "incorrect_answers": ["True"] },
+    { "category": "Entertainment: Film", "type": "multiple", "difficulty": "easy", "question": "What is the oldest Disney film?", "correct_answer": "Snow White and the Seven Dwarfs", "incorrect_answers": ["Pinocchio", "Dumbo", "Fantasia"] },
+    { "category": "Entertainment: Film", "type": "boolean", "difficulty": "easy", "question": "George Lucas directed the entire original Star Wars trilogy.", "correct_answer": "False", "incorrect_answers": ["True"] },
+    { "category": "History", "type": "boolean", "difficulty": "easy", "question": "Kublai Khan is the grandchild of Genghis Khan?", "correct_answer": "True", "incorrect_answers": ["False"] },
+    { "category": "Politics", "type": "multiple", "difficulty": "medium", "question": "Before 2016, in which other year did Donald Trump run for President?", "correct_answer": "2000", "incorrect_answers": ["2012", "1988", "2008"] },
+    { "category": "Entertainment: Video Games", "type": "multiple", "difficulty": "easy", "question": "In &quot;Pheonix Wright: Ace Attorney&quot; which character is the District Chief of Police?", "correct_answer": "Damon Gant", "incorrect_answers": ["Miles Edgeworth", "Lana Skye", "Mike Meekins"] },
+    { "category": "Entertainment: Video Games", "type": "multiple", "difficulty": "medium", "question": "In the co-op shooter Payday 2, which contact helps you break out Hoxton?", "correct_answer": "The Dentist", "incorrect_answers": ["Vlad", "The Elephant", "The Butcher"] },
+    { "category": "Science: Mathematics", "type": "multiple", "difficulty": "medium", "question": "What type of function is x&sup2;+2x+1?", "correct_answer": "Quadratic", "incorrect_answers": ["Rational", "Linear", "Exponential"] }]
+    const onlineQuestions = ref<any>([])
+    async function getQuestions() {
+        try {
+            // onlineQuestions.value = []
+            let res = await fetch(`https://opentdb.com/api.php?amount=${amount.value}&category=${category.value}&difficulty=${difficulty.value}&type=${type.value}`)
+            let data = await res.json()
+            onlineQuestions.value = data?.results
+            console.log(onlineQuestions)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const questions = computed(() => {
+        getQuestions()
+        if(onlineQuestions.value.length < 1) {
+            return offlineQuestions
+        } else {
+            return onlineQuestions
+        }
+    })
+
+    return { questions, amount, difficulty, category, type}
+})

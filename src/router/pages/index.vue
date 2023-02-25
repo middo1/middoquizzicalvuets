@@ -1,3 +1,3 @@
 <template>
-    <p>Hello fucks!</p>
+    <p class="text-6xl">Hello fucks!</p>
 </template>

@@ -9,9 +9,9 @@ export default createRouter({
             component: () => import('./pages/index.vue')
         },
         {
-            path: '/question',
-            name: 'question',
-            component: () => import('./pages/question.vue')
+            path: '/questions',
+            name: 'questions',
+            component: () => import('./pages/questions.vue')
         }
     ]
 })
