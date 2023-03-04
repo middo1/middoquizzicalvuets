@@ -6,6 +6,7 @@ export const useQuestionStore = defineStore('questions', () => {
     const difficulty = ref("")
     const category = ref("")
     const type = ref("")
+    const checker = ref(true)
     const offlineQuestions = [{ "category": "Sports", "type": "multiple", "difficulty": "hard", "question": "How many times did Martina Navratilova win the Wimbledon Singles Championship?", "correct_answer": "Nine", "incorrect_answers": ["Ten", "Seven", "Eight"] },
     { "category": "Entertainment: Video Games", "type": "multiple", "difficulty": "easy", "question": "Which of these is NOT a main playable character in &quot;Grand Theft Auto V&quot;?", "correct_answer": "Lamar", "incorrect_answers": ["Trevor", "Michael", "Franklin"] },
     { "category": "Entertainment: Comics", "type": "boolean", "difficulty": "hard", "question": "In the comic book &quot;Archie&quot;, Betty is friends with Veronica because she is rich.", "correct_answer": "False", "incorrect_answers": ["True"] },
@@ -16,27 +17,62 @@ export const useQuestionStore = defineStore('questions', () => {
     { "category": "Entertainment: Video Games", "type": "multiple", "difficulty": "easy", "question": "In &quot;Pheonix Wright: Ace Attorney&quot; which character is the District Chief of Police?", "correct_answer": "Damon Gant", "incorrect_answers": ["Miles Edgeworth", "Lana Skye", "Mike Meekins"] },
     { "category": "Entertainment: Video Games", "type": "multiple", "difficulty": "medium", "question": "In the co-op shooter Payday 2, which contact helps you break out Hoxton?", "correct_answer": "The Dentist", "incorrect_answers": ["Vlad", "The Elephant", "The Butcher"] },
     { "category": "Science: Mathematics", "type": "multiple", "difficulty": "medium", "question": "What type of function is x&sup2;+2x+1?", "correct_answer": "Quadratic", "incorrect_answers": ["Rational", "Linear", "Exponential"] }]
-    const onlineQuestions = ref<any>([])
+    const questions = ref<any>([])
     async function getQuestions() {
         try {
-            // onlineQuestions.value = []
+            questions.value = []
             let res = await fetch(`https://opentdb.com/api.php?amount=${amount.value}&category=${category.value}&difficulty=${difficulty.value}&type=${type.value}`)
             let data = await res.json()
-            onlineQuestions.value = data?.results
-            console.log(onlineQuestions)
-
+            questions.value = data?.results
+            console.log(questions)
+            // checker.value = false
         } catch (error) {
+            questions.value = offlineQuestions
             console.log(error)
         }
     }
-    const questions = computed(() => {
-        getQuestions()
-        if(onlineQuestions.value.length < 1) {
-            return offlineQuestions
-        } else {
-            return onlineQuestions
-        }
-    })
+    // const questions = computed(() => {
+    //     getQuestions()
+    //     return onlineQuestions
+    // })
+    const categories = ref<Array<string>>([
+        "Any Category",
+        "Entertainment: Books",
+        "Entertainment: Film",
+        "Entertainment: Music",
+        "Entertainment: Musicals & Theatres",
+        "Entertainment: Television",
+        "Entertainment: Video Games",
+        "Entertainment: Board Games",
+        "Science & Nature",
+        "Science: Computers",
+        "Science: Mathematics",
+        "Mythology",
+        "Sports",
+        "Geography",
+        "History",
+        "Politics",
+        "Art",
+        "Celebrities",
+        "Animals",
+        "Vehicles",
+        "Entertainment: Comics",
+        "Science: Gadgets",
+        "Entertainment: Japanese Anime & Manga",
+        "Entertainment: Cartoon & Animations"
+    ])
+    const difficulties = ref<Array<string>>([
+        "Any Difficulty",
+        "Easy",
+        "Medium",
+        "Hard"
+    ])
+    const types = ref<Array<string>>([
+        "Any Type",
+        "Multiple Choice",
+        "True/False"
+    ])
+    const score = ref<number>(0)
 
-    return { questions, amount, difficulty, category, type}
+    return { questions, amount, difficulty, category, type, categories, difficulties, types, score, getQuestions}
 })
