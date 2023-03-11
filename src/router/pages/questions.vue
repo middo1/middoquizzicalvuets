@@ -46,7 +46,7 @@ export default defineComponent({
       <h3>Loading...</h3>
     </div>
   </Teleport>
-  <div v-if="store.questions.length > 1">
+  <div v-if="store.questions.length > 1" class="px-3">
     <template v-for="question in store.questions" :key="question?.question">
       <Question :question="question" :check="check" />
     </template>
