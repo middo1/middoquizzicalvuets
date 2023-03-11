@@ -1,120 +1,137 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { assert } from "@vue/compiler-core";
+import { defineComponent, watch } from "vue";
+import { useQuestionStore } from "../stores/questions";
+
 export default defineComponent({
-  setup(props, {emit}) {
+  setup() {
+    const store = useQuestionStore();
 
+    // watch(() => store.category, (value) => {
+    //     console.log(value)
+    // })
 
-    function handleStartChange() {
-      emit("startChange")
-    }
-
-    function amountIncrease(event : any) {
-      emit("amountIncrease")
-    }
-
-    function amountDecrease(event : any) {
-      emit("amountDecrease")
-    }
-
-    function typeChange(event: any) {
-      emit("typeChange", event.target.value)
-    }
-
-    function categoryChange(event: any) {
-      emit("categoryChange", event.target.value)
-    }
-
-    function difficultyChange(event: any) {
-      emit("difficultyChange", event.target.value)
-    }
-    return {
-      handleStartChange,
-      amountIncrease,
-      amountDecrease,
-      typeChange,
-      categoryChange,
-      difficultyChange,
-    };
-  },
-  props: {
-    amount: Number,
-    category: String,
-    difficulty: String,
-    type: String,
-  },
-  mounted() {
-    this.amount;
-    this.category;
-    this.difficulty;
-    this.type;
+    return { store };
   },
 });
 </script>
-
 <template>
-  <div class="start-app">
-    <h1 class="app-name">Quizzical</h1>
-    <h5 class="app-description">A cool quiz app</h5>
-    <form>
-      <div class="select-container">
+  <div class="h-full items-center justify-center flex">
+    <div class="flex flex-col gap-6 justify-center items-center">
+      <div>
+        <h1 class="text-2xl text-blue-700">Quizzical</h1>
+        <h3 class="text-sm text-gray-500">A cool Quiz app</h3>
+      </div>
+      <div class="flex flex-col gap-4 form-group">
         <label>
-          Select Number of Questions:
-          <div class="amount-form">
-            <input type="text" readonly :value="amount" />
-            <button class="amount-btn" type="button" @click="amountIncrease">+</button>
-            <button class="amount-btn" type="button" @click="amountDecrease">-</button>
+          <span> SELECT NUMBER OF QUESTION: </span>
+          <div class="flex gap-2">
+            <input
+              class="flex-grow border border-gray-300 focus:outline-0 outline-none px-3 rounded-md"
+              type="type"
+              :value="store.amount"
+              readonly
+            />
+            <button
+              class="px-3 py-1 bg-gray-200 rounded-md active:bg-blue-500"
+              @click="store.amount < 50 ? (store.amount += 5) : store.amount"
+            >
+              +
+            </button>
+            <button
+              class="px-3 py-1 bg-gray-200 rounded-md active:bg-blue-500"
+              @click="store.amount > 5 ? (store.amount -= 5) : store.amount"
+            >
+              -
+            </button>
           </div>
         </label>
         <label>
-          Select Category:
-          <select :value="category" @change="categoryChange">
-            <option value="">Any Category</option>
-            <option value="10">Entertainment: Books</option>
-            <option value="11">Entertainment: Film</option>
-            <option value="12">Entertainment: Music</option>
-            <option value="13">Entertainment: Musicals &amp; Theatres</option>
-            <option value="14">Entertainment: Television</option>
-            <option value="15">Entertainment: Video Games</option>
-            <option value="16">Entertainment: Board Games</option>
-            <option value="17">Science &amp; Nature</option>
-            <option value="18">Science: Computers</option>
-            <option value="19">Science: Mathematics</option>
-            <option value="20">Mythology</option>
-            <option value="21">Sports</option>
-            <option value="22">Geography</option>
-            <option value="23">History</option>
-            <option value="24">Politics</option>
-            <option value="25">Art</option>
-            <option value="26">Celebrities</option>
-            <option value="27">Animals</option>
-            <option value="28">Vehicles</option>
-            <option value="29">Entertainment: Comics</option>
-            <option value="30">Science: Gadgets</option>
-            <option value="31">
-              Entertainment: Japanese Anime &amp; Manga
+          <span> SELECT CATEGORY: </span>
+          <select v-model="store.category">
+            <option
+              v-for="category in store.categories"
+              :value="
+                store.categories.indexOf(category) > 0
+                  ? String(store.categories.indexOf(category) + 9)
+                  : ''
+              "
+              :key="category"
+            >
+              {{ category }}
             </option>
-            <option value="32">Entertainment: Cartoon &amp; Animations</option>
           </select>
         </label>
+
         <label>
-          Select Type:
-          <select :value="type" @change="typeChange">
-            <option value="">Any Type</option>
-            <option value="multiple">Multiple Choice</option>
-            <option value="boolean">True/ False</option>
+          <span> SELECT TYPE: </span>
+          <select v-model="store.type">
+            <option
+              v-for="type in store.types"
+              :value="
+                store.types.indexOf(type) > 0
+                  ? store.types.indexOf(type) > 1
+                    ? 'boolean'
+                    : 'multiple'
+                  : ''
+              "
+              :key="type"
+            >
+              {{ type }}
+            </option>
           </select>
         </label>
+
         <label>
-          Select Difficulty:
-          <select :value="difficulty" @change="difficultyChange">
-            <option value="">Any Difficulty</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
+          <span> SELECT DIFFICULTY: </span>
+          <select v-model="store.difficulty">
+            <option
+              v-for="difficulty in store.difficulties"
+              :value="
+                store.difficulties.indexOf(difficulty) > 0
+                  ? difficulty.toLowerCase()
+                  : ''
+              "
+              :key="difficulty"
+            >
+              {{ difficulty }}
+            </option>
           </select>
         </label>
       </div>
-    </form>
-    <button class="app-btn" @click="handleStartChange">Start Quiz</button>
+      <div class="flex justify-center items-center">
+        <button
+          class="btn bg-blue-500 py-1 px-3 rounded-md text-white"
+          @click="() => $router.push({ name: 'questions' })"
+        >
+          Start
+        </button>
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="scss">
+.form-group {
+  > label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    > span {
+      @apply text-sm;
+    }
+
+    > select {
+      @apply py-1 px-3 bg-gray-200 rounded-md;
+    }
+  }
+}
+.btn:focus {
+  outline: none;
+}
+
+.btn:active {
+  box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+</style>
