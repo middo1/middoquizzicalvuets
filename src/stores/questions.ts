@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 export const useQuestionStore = defineStore("questions", () => {
-  const amount = ref(5);
-  const difficulty = ref("");
-  const category = ref("");
-  const type = ref("");
+  const amount = ref(sessionStorage.getItem("amount") ? Number(sessionStorage.getItem("amount")) : 5);
+  const difficulty = ref(sessionStorage.getItem("difficulty") ? sessionStorage.getItem("difficulty") : "");
+  const category = ref(sessionStorage.getItem("category") ? sessionStorage.getItem("category") : "");
+  const type = ref(sessionStorage.getItem("type") ? sessionStorage.getItem("type") : "");
   const checker = ref(true);
   const offlineQuestions = [
     {
@@ -105,6 +105,10 @@ export const useQuestionStore = defineStore("questions", () => {
       let data = await res.json();
       questions.value = data?.results;
       console.log(`https://opentdb.com/api.php?amount=${amount.value}&category=${category.value}&difficulty=${difficulty.value}&type=${type.value}`);
+      sessionStorage.setItem("amount", String(amount.value))
+      sessionStorage.setItem("category", String(category.value))
+      sessionStorage.setItem("difficulty", String(difficulty.value))
+      sessionStorage.setItem("type", String(type.value))
       // checker.value = false
     } catch (error) {
       questions.value = offlineQuestions;
