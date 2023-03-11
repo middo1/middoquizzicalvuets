@@ -5,3 +5,7 @@
 html {
     font-family: 'Karla', sans-serif;
 }
+
+html, body, #app {
+    height: 100%;
+}
