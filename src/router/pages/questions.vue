@@ -37,6 +37,31 @@ export default defineComponent({
 });
 </script>
 <template>
+  <div class="flex justify-center items-center gap-2 py-3 text-blue-900">
+    <h2>Category: {{ store.category === "" ? store.categories[0] : store.categories[store.category - 9] }}</h2>
+    <h2>
+      Type:
+      {{
+        store.type === ""
+          ? store.types[0]
+          : store.type === "boolean"
+          ? store.types[2]
+          : store.types[1]
+      }}
+    </h2>
+    <h2>
+      Difficulty:
+      {{
+        store.difficulty === ""
+          ? store.difficulties[0]
+          : store.difficulty === "easy"
+          ? store.difficulties[1]
+          : store.difficulty === "medium"
+          ? store.difficulties[2]
+          : store.difficulties[3]
+      }}
+    </h2>
+  </div>
   <Teleport to="body">
     <div
       v-if="store.questions.length < 1"
@@ -50,7 +75,9 @@ export default defineComponent({
     <template v-for="question in store.questions" :key="question?.question">
       <Question :question="question" :check="check" />
     </template>
-    <div class="flex justify-center items-center gap-2 my-3 flex-col sm:flex-row">
+    <div
+      class="flex justify-center items-center gap-2 my-3 flex-col sm:flex-row"
+    >
       <div class="flex row gap-2">
         <button
           @click="handleCheck()"
@@ -65,9 +92,9 @@ export default defineComponent({
           Reset Questions
         </button>
       </div>
-        <h3 v-if="check" class="text-blue-900 font-bold">
-          You scored {{ store.score }}/ {{ store.questions.length }}
-        </h3>
+      <h3 v-if="check" class="text-blue-900 font-bold">
+        You scored {{ store.score }}/ {{ store.questions.length }}
+      </h3>
     </div>
   </div>
 </template>
