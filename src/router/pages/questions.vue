@@ -93,7 +93,7 @@ export default defineComponent({
         </button>
       </div>
       <h3 v-if="check" class="text-blue-900 font-bold">
-        You scored {{ store.score }}/ {{ store.questions.length }}
+        You scored {{ store.score }}/{{ store.questions.length }}
       </h3>
     </div>
   </div>

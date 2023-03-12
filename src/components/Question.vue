@@ -60,9 +60,9 @@ export default defineComponent({
             </h1>
             <div class="flex items-center justify-center">
                 <div v-for="option in options" :key="option" v-html="option.value" class="option px-2 border border-blue-500 rounded-lg mx-2 my-2 text-xs cursor-pointer" :class="{
-                    'border-hidden bg-gray-200': option.isSelected,
+                    'border-hidden bg-blue-500 text-white': option.isSelected,
                     'opacity-60': option.value !== $props?.question?.correct_answer && $props?.check,
-                    'bg-red-300 border border-red-400 opacity-70': option.isSelected && option.value !== $props?.question?.correct_answer && $props?.check,
+                    'bg-red-300 border border-red-400 opacity-70 text-black': option.isSelected && option.value !== $props?.question?.correct_answer && $props?.check,
                     'bg-green-300 border-hidden': option.value === $props?.question?.correct_answer && $props?.check
                 }"
                     @click="handleClick(option.value)">
