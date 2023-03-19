@@ -36,7 +36,7 @@ export default defineComponent({
   },
 });
 </script>
-<template>
+<template class="p-3">
   <div class="flex justify-center items-center gap-2 py-3 text-blue-900">
     <h2>Category: {{ store.category === "" ? store.categories[0] : store.categories[store.category - 9] }}</h2>
     <h2>

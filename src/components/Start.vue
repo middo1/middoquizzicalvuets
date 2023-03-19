@@ -16,7 +16,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <div class="h-full items-center justify-center flex">
+  <div class="h-full items-center justify-center flex p-3">
     <div class="flex flex-col gap-6 justify-center items-center">
       <div>
         <h1 class="text-2xl text-blue-700">Quizzical</h1>
