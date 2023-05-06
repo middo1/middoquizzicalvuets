@@ -18,8 +18,8 @@ export default defineComponent({
 <template>
   <div class="h-full items-center justify-center flex p-3">
     <div class="flex flex-col gap-6 justify-center items-center">
-      <div>
-        <h1 class="text-2xl text-blue-700">Quizzical</h1>
+      <div class="flex flex-col items-center justify-center">
+        <h1 class="hd text-4xl text-blue-700 -top-9">Quizzical</h1>
         <h3 class="text-sm text-gray-500">A cool Quiz app</h3>
       </div>
       <div class="flex flex-col gap-4 form-group">
@@ -101,7 +101,7 @@ export default defineComponent({
       </div>
       <div class="flex justify-center items-center">
         <button
-          class="btn bg-blue-500 py-1 px-3 rounded-md text-white"
+          class="btn bg-blue-500 rounded-md px-7 py-1 text-white"
           @click="() => $router.push({ name: 'questions' })"
         >
           Start
@@ -133,5 +133,8 @@ export default defineComponent({
 
 .btn:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+.hd {
+  font-weight: 700;
 }
 </style>

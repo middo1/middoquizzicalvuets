@@ -70,7 +70,7 @@ export default defineComponent({
           v-for="option in options"
           :key="option"
           v-html="option.value"
-          class="option px-2 border border-blue-500 rounded-lg mx-2 my-2 text-xs cursor-pointer"
+          class="option px-2 border border-blue-500 rounded-lg mx-2 my-2 text-xs cursor-pointer selection:invisible"
           :class="{
             'border-hidden bg-blue-500 text-white': option.isSelected,
             'opacity-60':
