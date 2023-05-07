@@ -9,7 +9,7 @@ export default createRouter({
             component: () => import('./pages/index.vue')
         },
         {
-            path: '/questions',
+            path: '/questions/:id',
             name: 'questions',
             component: () => import('./pages/questions.vue')
         }

@@ -102,7 +102,7 @@ export default defineComponent({
       <div class="flex justify-center items-center">
         <button
           class="btn bg-blue-500 rounded-md px-7 py-1 text-white"
-          @click="() => $router.push({ name: 'questions' })"
+          @click="() => $router.push({ name: 'questions', params: {id : 1} })"
         >
           Start
         </button>

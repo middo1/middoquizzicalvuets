@@ -37,9 +37,9 @@ export default defineComponent({
 });
 </script>
 <template class="p-3">
-  <div class="flex justify-center items-center gap-2 py-3 text-blue-900">
-    <h2>Category: {{ store?.category === "" ? store.categories[0] : store.categories[ Number( store?.category) - 9] }}</h2>
-    <h2>
+  <div class="flex justify-center items-center gap-2 py-5 text-blue-900">
+    <h2 class="text-xs md:text-base">Category: {{ store?.category === "" ? store.categories[0] : store.categories[ Number( store?.category) - 9] }}</h2>
+    <h2 class="text-xs md:text-base">
       Type:
       {{
         store.type === ""
@@ -49,7 +49,7 @@ export default defineComponent({
           : store.types[1]
       }}
     </h2>
-    <h2>
+    <h2 class="text-xs md:text-base">
       Difficulty:
       {{
         store.difficulty === ""
