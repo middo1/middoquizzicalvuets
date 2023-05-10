@@ -7,6 +7,18 @@ export const useQuestionStore = defineStore("questions", () => {
   const category = ref(sessionStorage.getItem("category") ? sessionStorage.getItem("category") : "");
   const type = ref(sessionStorage.getItem("type") ? sessionStorage.getItem("type") : "");
   const checker = ref(true);
+  function setOption(incorrect: Array<any>, correct: any) {
+    const options = ref<any[]>([]);
+    const rand = Math.floor(Math.random() * 4);
+    let op = [];
+    options.value = [];
+    op = [...incorrect];
+    op.splice(rand, 0, correct);
+    for (let x = 0; x < op.length; x++) {
+      options.value.push({ value: op[x], isSelected: false });
+    }
+    return options
+  }
   const offlineQuestions = [
     {
       category: "Sports",
@@ -96,6 +108,12 @@ export const useQuestionStore = defineStore("questions", () => {
     },
   ];
   const questions = ref<any>([]);
+  
+  function setOptions(){
+    for(var i = 0; i < questions.value.length; i++){
+      questions.value[i].options = setOption(questions.value[i].incorrect_answers, questions.value[i].correct_answer)
+    }
+  }
   async function getQuestions() {
     try {
       questions.value = [];
@@ -109,9 +127,11 @@ export const useQuestionStore = defineStore("questions", () => {
       sessionStorage.setItem("category", String(category.value))
       sessionStorage.setItem("difficulty", String(difficulty.value))
       sessionStorage.setItem("type", String(type.value))
+      setOptions()
       // checker.value = false
     } catch (error) {
       questions.value = offlineQuestions;
+      setOptions()
       console.log(error);
     }
   }
@@ -169,5 +189,6 @@ export const useQuestionStore = defineStore("questions", () => {
     types,
     score,
     getQuestions,
+    setOptions
   };
 });

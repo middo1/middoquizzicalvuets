@@ -1,8 +1,10 @@
 <script lang="ts">
 import Question from "../../components/Question.vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useQuestionStore } from "../../stores/questions";
 import Loading from "../../components/Loading.vue";
+import { useRoute, useRouter } from "vue-router";
+import router from "..";
 export default defineComponent({
   components: {
     Question,
@@ -10,29 +12,70 @@ export default defineComponent({
   },
   setup() {
     const store = useQuestionStore();
-
     const restart = ref<number>(0);
+    const route = useRoute()
     const check = ref<boolean>(false);
-
+    const router = useRouter()
+    const id_ = ref(route.params.id)
+    
+    function calcScore() {
+      console.log("omoooo")
+      var score = 0
+      const checkAnswer = store.questions[+route.params.id].options.filter(
+        (option: { isSelected: any; value: any; }) =>
+          option.isSelected && option.value === store.questions[+route.params.id].correct_answer
+      );
+      score += checkAnswer.length;
+      store.score = checkAnswer.length
+        ? store.score + checkAnswer.length
+        : score > 0
+        ? store.score - 1
+        : store.score;
+    }
     function handleCheck() {
       if (check.value) {
         check.value = !check.value;
         restart.value += 1;
         store.score = 0;
+        router.push({name: 'questions', params : { id : "0"}})
       } else {
+        !check.value && calcScore()
         check.value = !check.value;
       }
     }
 
-    return { store, check, handleCheck, restart };
+    function prevQuestion(){
+      id_.value = String(+route.params.id - 1)
+    }
+    
+    function nextQuestion(){
+      id_.value = String(+route.params.id + 1)
+      !check.value && calcScore()
+    }
+    function handleClick(optionv: any) {
+      if (!check.value) {
+        store.questions[+route.params.id].options = store.questions[+route.params.id].options.map((option: { value: any; isSelected: any; }) =>
+        option.value === optionv
+        ? { ...option, isSelected: !option.isSelected }
+        : { ...option, isSelected: false }
+        );
+      }
+    }
+    return { store, check, handleCheck, restart, nextQuestion, id_, prevQuestion, handleClick };
   },
   mounted() {
     this.store.getQuestions();
+    this.store.setOptions()
   },
   watch: {
-    restart(oldRestart, newRestart) {
+
+    restart(newRestart, oldRestart) {
       this.store.getQuestions();
     },
+    id_(newId, oldId){
+      this.$router.push({name: "questions", params : {id: newId}})
+    }
+    
   },
 });
 </script>
@@ -72,31 +115,47 @@ export default defineComponent({
     </div>
   </Teleport>
   <div v-if="store.questions.length > 1" class="px-3">
-    <template v-for="question in store.questions" :key="question?.question">
-      <Question :question="question" :check="check" />
-    </template>
+    <!-- <template v-for="question in store.questions" :key="question?.question">
+    </template> -->
+    <Question :question="store.questions[+$route.params.id]" :check="check" @choose-option="(v) => handleClick(v)"/>
     <div
       class="flex justify-center items-center gap-2 my-3 flex-col sm:flex-row"
     >
       <div class="flex row gap-2">
         <button
-          @click="handleCheck()"
-          class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+        v-if="+$route.params.id === store.questions.length - 1"
+        @click="() => $router.push({ name: 'index' })"
+        class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
         >
-          {{ check ? "Play Again" : "Check Answer" }}
+        Reset Questions
         </button>
         <button
-          @click="() => $router.push({ name: 'index' })"
-          class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+        v-if="+$route.params.id > 0"
+        @click="prevQuestion"
+        class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
         >
-          Reset Questions
-        </button>
-      </div>
-      <h3 v-if="check" class="text-blue-900 font-bold">
-        You scored {{ store.score }}/{{ store.questions.length }}
-      </h3>
-    </div>
+        Prev
+      </button>
+      <button
+      v-if="+$route.params.id < store.questions.length - 1"
+      @click="nextQuestion"
+      class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+      >
+      Next
+    </button>
+    <button
+      v-if="+$route.params.id === store.questions.length - 1"
+      @click="handleCheck()"
+      class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+    >
+      {{ check ? "Play Again" : "Check Answer" }}
+    </button>
   </div>
+  <h3 v-if="check" class="text-blue-900 font-bold">
+    You scored {{ store.score }}/{{ store.questions.length }}
+  </h3>
+</div>
+</div>
 </template>
 <style scoped>
 .modal {
