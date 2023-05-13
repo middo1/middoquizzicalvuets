@@ -125,33 +125,33 @@ export default defineComponent({
         <button
         v-if="+$route.params.id === store.questions.length - 1"
         @click="() => $router.push({ name: 'index' })"
-        class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+        class="btn px-3 py-1 bg-blue-500 rounded-md text-white text-sm md:text-base"
         >
         Reset Questions
         </button>
         <button
         v-if="+$route.params.id > 0"
         @click="prevQuestion"
-        class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+        class="btn px-3 py-1 bg-blue-500 rounded-md text-white text-sm md:text-base"
         >
         Prev
       </button>
       <button
       v-if="+$route.params.id < store.questions.length - 1"
       @click="nextQuestion"
-      class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+      class="btn px-3 py-1 bg-blue-500 rounded-md text-white text-sm md:text-base"
       >
       Next
     </button>
     <button
       v-if="+$route.params.id === store.questions.length - 1"
       @click="handleCheck()"
-      class="btn px-3 py-1 bg-blue-500 rounded-md text-white"
+      class="btn px-3 py-1 bg-blue-500 rounded-md text-white text-sm md:text-base"
     >
       {{ check ? "Play Again" : "Check Answer" }}
     </button>
   </div>
-  <h3 v-if="check" class="text-blue-900 font-bold">
+  <h3 v-if="check" class="text-blue-900 font-bold text-sm">
     You scored {{ store.score }}/{{ store.questions.length }}
   </h3>
 </div>

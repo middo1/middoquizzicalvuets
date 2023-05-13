@@ -19,7 +19,6 @@ export default defineComponent({
     })
     function handleChoose(op: any) {
       emit('chooseOption',op)
-      console.log("omooo")
       options.value = props?.question?.options
     }
 
@@ -47,20 +46,20 @@ export default defineComponent({
 </script>
 <template>
   <div class="flex items-center justify-center p-3">
-    <div class="question py-3">
-      <h1
-      class="text-blue-900 font-bold text-center text-sm sm:text-base"
-      v-html="question?.question"
-      ></h1>
-      <div class="flex items-center justify-center">
+    <div class="question py-3 justify-center items-center">
+      <div class="my-4 p-2 bg-slate-100 border rounded-lg">
+        <p class=" text-xs text-zinc-600">{{ +$route.params.id  + 1}} of {{ store.questions.length }} questions</p>
+        <h1
+        class="text-blue-900 font-bold text-center text-sm sm:text-base p-4"
+        v-html="question?.question"
+        ></h1>
+      </div>
+      <div class="flex justify-center flex-col p-4">
         <div
         v-for="option in options" :key="option">
-          <Option :option="option" :checked="$props.check" @click="!$props.check && handleChoose(option.value) "/>
+          <Option :option="option" :checked="$props.check" :correct="$props?.question?.correct_answer" @click="!$props.check && handleChoose(option.value) "/>
         </div>
       </div>
     </div>
-  </div>
-  <div class="flex items-center justify-center">
-    <hr class="w-4/5" />
   </div>
 </template>
