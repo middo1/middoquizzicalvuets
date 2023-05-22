@@ -17,6 +17,7 @@ export default defineComponent({
     const check = ref<boolean>(false);
     const router = useRouter()
     const id_ = ref(route.params.id)
+    const drop = ref(false)
     
     function calcScore() {
       console.log("omoooo")
@@ -39,6 +40,7 @@ export default defineComponent({
         store.score = 0;
         router.push({name: 'questions', params : { id : "0"}})
       } else {
+        router.push({name: 'questions', params : { id : "0"}})
         !check.value && calcScore()
         check.value = !check.value;
       }
@@ -61,7 +63,7 @@ export default defineComponent({
         );
       }
     }
-    return { store, check, handleCheck, restart, nextQuestion, id_, prevQuestion, handleClick };
+    return { store, check, handleCheck, restart, nextQuestion, id_, prevQuestion, handleClick, drop };
   },
   mounted() {
     this.store.getQuestions();
@@ -80,7 +82,27 @@ export default defineComponent({
 });
 </script>
 <template class="p-3">
-  <div class="flex justify-center items-center gap-2 py-5 text-blue-900">
+  <Teleport to="body">
+    <div
+      v-if="store.questions.length < 1"
+      class="modal flex items-center justify-center p-5 border border-blue-500 rounded-md"
+    >
+      <Loading class="text-blue-700 mx-2" />
+      <h3>Loading...</h3>
+    </div>
+  </Teleport>
+  <div class="flex items-center gap-2 py-5 text-blue-900 bg-slate-100 flex-grow justify-between">
+    <h1 class="hd text-2xl text-blue-700 -top-9 px-2">Quizzical</h1>
+    <div class="flex items-end">
+      <div class="dropdown px-5">
+        <button @click="drop = !drop">Details</button>
+      </div>
+    </div>
+  </div>
+  <div class="dropdown-content overflow-auto shadow-slate-600 text-blue-900 bg-slate-100" :class="{
+    'hidden': !drop,
+    'flex flex-col items-center justify-center': drop,
+  }">
     <h2 class="text-xs md:text-base">Category: {{ store?.category === "" ? store.categories[0] : store.categories[ Number( store?.category) - 9] }}</h2>
     <h2 class="text-xs md:text-base">
       Type:
@@ -105,15 +127,6 @@ export default defineComponent({
       }}
     </h2>
   </div>
-  <Teleport to="body">
-    <div
-      v-if="store.questions.length < 1"
-      class="modal flex items-center justify-center p-5 border border-blue-500 rounded-md"
-    >
-      <Loading class="text-blue-700 mx-2" />
-      <h3>Loading...</h3>
-    </div>
-  </Teleport>
   <div v-if="store.questions.length > 1" class="px-3">
     <!-- <template v-for="question in store.questions" :key="question?.question">
     </template> -->
@@ -172,5 +185,8 @@ export default defineComponent({
 
 .btn:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>
